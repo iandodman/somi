@@ -62,19 +62,14 @@ export function Navbar() {
           <div className="flex items-center z-10">
             <Link 
               href={session ? "/dashboard" : "/"} 
-              className="flex items-center gap-2.5 font-bold text-slate-900 dark:text-white transition"
+              className="flex items-center gap-2.5 font-bold text-slate-900 dark:text-white transition group"
             >
-              <div className="p-2 bg-blue-600 text-white rounded-xl shadow-xs shrink-0">
-                <ShieldCheck className="w-5 h-5" />
+              <div className="p-2 bg-blue-600 text-white rounded-xl shadow-xs shrink-0 group-hover:bg-blue-700 transition">
+                <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
-              <div className="flex flex-col text-left">
-                <span className="text-base font-extrabold tracking-tight leading-none">
-                  SOMI
-                </span>
-                <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium tracking-wider uppercase">
-                  Operaciones DSV
-                </span>
-              </div>
+              <span className="text-xl sm:text-2xl font-black tracking-tight leading-none">
+                SOMI
+              </span>
             </Link>
           </div>
 
@@ -138,7 +133,8 @@ export function Navbar() {
 
             {/* Separador vertical sutil */}
             <div className="h-5 w-px bg-slate-200 dark:bg-slate-800 mx-1" />
-              <button
+
+            <button
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
               aria-label="Cambiar tema"
               className="p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition"
@@ -146,7 +142,6 @@ export function Navbar() {
               <Sun className="w-5 h-5 hidden dark:block text-amber-400" />
               <Moon className="w-5 h-5 block dark:hidden text-slate-600" />
             </button>
-            
 
             {/* Menú Móvil (Solo visible dentro de la app con sesión) */}
             {showNav && (
