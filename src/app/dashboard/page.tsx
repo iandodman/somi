@@ -6,6 +6,7 @@ import { ActivoCompleto, EstadoMantencion } from '@/types';
 import { DashboardMetrics } from '@/components/dashboard/DashboardMetrics';
 import { DashboardTable } from '@/components/dashboard/DashboardTable';
 import { Search } from 'lucide-react';
+import { AuthGuard } from '@/components/auth/AuthGuard';
 
 const PAGE_SIZE = 10;
 
@@ -131,6 +132,7 @@ export default function DashboardPage() {
   }, [cargarActivosPaginados]);
 
   return (
+    <AuthGuard>
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 p-3 sm:p-6 lg:p-8 space-y-6 transition-colors">
       
       {/* Título Principal */}
@@ -206,5 +208,6 @@ export default function DashboardPage() {
         />
 
     </div>
+    </AuthGuard>
   );
 }

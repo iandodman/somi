@@ -18,6 +18,7 @@ import {
   Trash2,
   Edit3
 } from 'lucide-react';
+import { AuthGuard } from '@/components/auth/AuthGuard';
 
 const ESTILOS_ESTADO: Record<string, string> = {
   VENCIDO: 'bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-900',
@@ -86,6 +87,7 @@ export default function ServiciosPage() {
   }, [servicios, busqueda, filtroEstado, categoriaFiltro]);
 
   return (
+    <AuthGuard>
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 p-3 sm:p-6 lg:p-8 space-y-6 transition-colors">
       
       {/* Cabecera */}
@@ -368,5 +370,6 @@ export default function ServiciosPage() {
       />
 
     </div>
+    </AuthGuard>
   );
 }

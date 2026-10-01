@@ -13,6 +13,7 @@ import {
   ChevronRight,
   Sparkles
 } from 'lucide-react';
+import { AuthGuard } from '@/components/auth/AuthGuard';
 
 const ITEMS_POR_PAGINA = 10;
 
@@ -112,6 +113,7 @@ export default function MaestroPage() {
   }, [tareasFiltradas, paginaActual]);
 
   return (
+    <AuthGuard>
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 p-3 sm:p-6 pb-24 transition-colors">
       <div className="max-w-2xl mx-auto space-y-5">
 
@@ -353,5 +355,6 @@ export default function MaestroPage() {
 
       </div>
     </div>
+    </AuthGuard>
   );
 }
