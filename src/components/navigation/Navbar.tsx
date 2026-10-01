@@ -106,18 +106,6 @@ export function Navbar() {
 
           {/* EXTREMO DERECHO: Controles y Perfil */}
           <div className="flex items-center gap-2 z-10">
-            <button
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              aria-label="Cambiar tema"
-              className="p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-            >
-              <Sun className="w-5 h-5 hidden dark:block text-amber-400" />
-              <Moon className="w-5 h-5 block dark:hidden text-slate-600" />
-            </button>
-
-            {/* Separador vertical sutil */}
-            <div className="h-5 w-px bg-slate-200 dark:bg-slate-800 mx-1" />
-
             {session ? (
               <div className="flex items-center gap-2">
                 {/* Indicador de perfil institucional */}
@@ -147,6 +135,18 @@ export function Navbar() {
                 <span>Ingresar</span>
               </Link>
             )}
+
+            {/* Separador vertical sutil */}
+            <div className="h-5 w-px bg-slate-200 dark:bg-slate-800 mx-1" />
+              <button
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              aria-label="Cambiar tema"
+              className="p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+            >
+              <Sun className="w-5 h-5 hidden dark:block text-amber-400" />
+              <Moon className="w-5 h-5 block dark:hidden text-slate-600" />
+            </button>
+            
 
             {/* Menú Móvil (Solo visible dentro de la app con sesión) */}
             {showNav && (
