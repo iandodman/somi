@@ -3,21 +3,33 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ShieldCheck, Lock, Mail, ArrowRight } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
+import { ShieldCheck, Lock, Mail, ArrowRight, AlertCircle } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    // Por ahora redirige directo al dashboard como acceso demostrativo
-    setTimeout(() => {
+    setErrorMsg(null);
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password: password,
+    });
+
+    if (error) {
+      setErrorMsg('Credenciales inválidas. Revisa el correo o la contraseña.');
+      setLoading(false);
+    } else if (data.session) {
       router.push('/dashboard');
-    }, 600);
+      router.refresh();
+    }
   }
 
   return (
@@ -37,6 +49,13 @@ export default function LoginPage() {
           </p>
         </div>
 
+        {errorMsg && (
+          <div className="p-3 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-900 text-rose-700 dark:text-rose-300 rounded-xl text-xs flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            <span>{errorMsg}</span>
+          </div>
+        )}
+
         {/* Formulario */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1">
@@ -48,7 +67,7 @@ export default function LoginPage() {
               <input
                 type="email"
                 required
-                placeholder="usuario@colegiodsv.cl"
+                placeholder="operaciones@colegiodsv.cl"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full pl-10 pr-3.5 py-2.5 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -78,7 +97,7 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full flex items-center justify-center gap-2 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold shadow-md transition active:scale-95 disabled:opacity-50"
           >
-            <span>{loading ? 'Ingresando...' : 'Iniciar Sesión'}</span>
+            <span>{loading ? 'Validando...' : 'Iniciar Sesión'}</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </form>
