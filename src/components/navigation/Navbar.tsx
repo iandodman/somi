@@ -22,7 +22,7 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { label: 'Dashboard', href: '/', icon: LayoutDashboard },
+    { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { label: 'Inventario', href: '/activos', icon: Building },
     { label: 'Servicios & Leyes', href: '/servicios', icon: FileCheck },
     { label: 'Técnico / Terreno', href: '/maestro', icon: Wrench },
