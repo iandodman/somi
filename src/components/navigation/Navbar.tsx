@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { supabase } from '@/lib/supabase';
 import { 
@@ -16,12 +16,12 @@ import {
   X,
   ShieldCheck,
   LogOut,
-  LogIn
+  LogIn,
+  UserCheck
 } from 'lucide-react';
 
 export function Navbar() {
   const pathname = usePathname();
-  const router = useRouter();
   const { theme, setTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [session, setSession] = useState<any>(null);
@@ -40,8 +40,7 @@ export function Navbar() {
 
   async function handleLogout() {
     await supabase.auth.signOut();
-    setSession(null);
-    router.replace('/login');
+    window.location.href = '/login';
   }
 
   const isPublicPage = pathname === '/' || pathname === '/login';
@@ -59,7 +58,7 @@ export function Navbar() {
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between h-16">
           
-          {/* EXTREMO IZQUIERDO: Logo */}
+          {/* EXTREMO IZQUIERDO: Marca SOMI */}
           <div className="flex items-center z-10">
             <Link 
               href={session ? "/dashboard" : "/"} 
@@ -79,7 +78,7 @@ export function Navbar() {
             </Link>
           </div>
 
-          {/* CENTRO: Menú de Navegación (Solo si hay sesión activa) */}
+          {/* CENTRO: Menú de Módulos (Solo dentro del sistema autenticado) */}
           {showNav && (
             <nav className="hidden md:flex absolute inset-x-0 mx-auto justify-center pointer-events-none">
               <div className="flex items-center gap-1 pointer-events-auto bg-slate-100/90 dark:bg-slate-800/90 p-1.5 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 shadow-2xs">
@@ -105,7 +104,7 @@ export function Navbar() {
             </nav>
           )}
 
-          {/* EXTREMO DERECHO: Tema y Botón Login / Logout */}
+          {/* EXTREMO DERECHO: Controles y Perfil */}
           <div className="flex items-center gap-2 z-10">
             <button
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
@@ -116,14 +115,29 @@ export function Navbar() {
               <Moon className="w-5 h-5 block dark:hidden text-slate-600" />
             </button>
 
+            {/* Separador vertical sutil */}
+            <div className="h-5 w-px bg-slate-200 dark:bg-slate-800 mx-1" />
+
             {session ? (
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/50 hover:bg-rose-100 dark:hover:bg-rose-900/60 rounded-xl transition border border-rose-200 dark:border-rose-900/50"
-              >
-                <LogOut className="w-4 h-4" />
-                <span className="hidden sm:inline">Cerrar Sesión</span>
-              </button>
+              <div className="flex items-center gap-2">
+                {/* Indicador de perfil institucional */}
+                <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-lg text-xs font-medium border border-slate-200/80 dark:border-slate-700/80">
+                  <UserCheck className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                  <span className="truncate max-w-[120px]">
+                    {session.user?.email?.split('@')[0] || 'Sesión Activa'}
+                  </span>
+                </div>
+
+                {/* Botón Salir integrado */}
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="p-2 text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl transition"
+                  title="Cerrar Sesión"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
             ) : (
               <Link
                 href="/login"
@@ -134,7 +148,7 @@ export function Navbar() {
               </Link>
             )}
 
-            {/* Menú Móvil (solo si hay sesión) */}
+            {/* Menú Móvil (Solo visible dentro de la app con sesión) */}
             {showNav && (
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -170,6 +184,19 @@ export function Navbar() {
               </Link>
             );
           })}
+          
+          <div className="pt-2 mt-2 border-t border-slate-100 dark:border-slate-800">
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                handleLogout();
+              }}
+              className="w-full flex items-center gap-3 px-3.5 py-3 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl text-sm font-semibold transition"
+            >
+              <LogOut className="w-5 h-5" />
+              <span>Cerrar Sesión</span>
+            </button>
+          </div>
         </div>
       )}
     </header>

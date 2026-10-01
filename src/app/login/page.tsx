@@ -1,13 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { ShieldCheck, Lock, Mail, ArrowRight, AlertCircle } from 'lucide-react';
 
 export default function LoginPage() {
-  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -18,17 +16,27 @@ export default function LoginPage() {
     setLoading(true);
     setErrorMsg(null);
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: email.trim(),
-      password: password,
-    });
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password: password,
+      });
 
-    if (error) {
-      setErrorMsg('Credenciales inválidas. Revisa el correo o la contraseña.');
+      if (error) {
+        setErrorMsg('Credenciales inválidas. Revisa el correo o la contraseña.');
+        setLoading(false);
+        return;
+      }
+
+      if (data?.session) {
+        // Redirección directa y garantizada al panel de operaciones
+        window.location.href = '/dashboard';
+      } else {
+        setLoading(false);
+      }
+    } catch {
+      setErrorMsg('Ocurrió un error inesperado al conectar con el servidor.');
       setLoading(false);
-    } else if (data.session) {
-      router.push('/dashboard');
-      router.refresh();
     }
   }
 

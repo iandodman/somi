@@ -6,35 +6,49 @@ import { supabase } from '@/lib/supabase';
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const [authenticated, setAuthenticated] = useState<boolean | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
+
     async function checkAuth() {
       const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!isMounted) return;
+
       if (!session) {
-        setAuthenticated(false);
+        setIsAuthenticated(false);
+        setLoading(false);
         router.replace('/login');
       } else {
-        setAuthenticated(true);
+        setIsAuthenticated(true);
+        setLoading(false);
       }
     }
 
     checkAuth();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!isMounted) return;
+
       if (!session) {
-        setAuthenticated(false);
+        setIsAuthenticated(false);
+        setLoading(false);
         router.replace('/login');
       } else {
-        setAuthenticated(true);
+        setIsAuthenticated(true);
+        setLoading(false);
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
   }, [router]);
 
-  // Mientras verifica la sesión, muestra pantalla de carga neutra sin filtrar datos
-  if (authenticated === null) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
@@ -45,8 +59,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
     );
   }
 
-  // Si no está autenticado, no renderiza nada mientras redirige
-  if (!authenticated) {
+  if (!isAuthenticated) {
     return null;
   }
 
