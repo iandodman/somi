@@ -111,7 +111,7 @@ export default function MaestroPage() {
 
   return (
     <AuthGuard>
-      <div className="max-w-2xl mx-auto pb-16 space-y-5 transition-colors">
+      <div className="max-w-7xl mx-auto pb-16 space-y-6 transition-colors">
 
         {/* Encabezado Maestro */}
         <div className="flex items-center gap-3 border-b border-slate-200 dark:border-slate-800 pb-4">
@@ -119,17 +119,17 @@ export default function MaestroPage() {
             <Wrench className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-lg sm:text-xl font-extrabold tracking-tight text-brand-dark dark:text-white">
+            <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-brand-dark dark:text-white">
               Panel Técnico en Terreno
             </h1>
-            <p className="text-xs text-brand-metallic dark:text-slate-400">
+            <p className="text-xs sm:text-sm text-brand-metallic dark:text-slate-400">
               Búsqueda rápida por placa y registro inmediato de mantención
             </p>
           </div>
         </div>
 
         {/* Caja de Búsqueda de Código Rápida */}
-        <div className="bg-white dark:bg-brand-cardDark p-4 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 shadow-xs space-y-3">
+        <div className="bg-white dark:bg-brand-cardDark p-4 sm:p-5 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 shadow-xs space-y-3">
           <label className="block text-xs font-bold uppercase tracking-wider text-brand-metallic dark:text-slate-400">
             Código de Activo / Placa
           </label>
@@ -146,7 +146,7 @@ export default function MaestroPage() {
 
           {/* Tarjeta de coincidencia exacta inmediata */}
           {activoEncontradoExacto && (
-            <div className="p-4 bg-brand-cyan/10 border border-brand-cyan/30 rounded-xl mt-3 space-y-3 animate-in fade-in">
+            <div className="p-4 bg-brand-cyan/10 border border-brand-cyan/30 rounded-xl mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-in fade-in">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
                   <span className="font-mono text-xs font-bold px-2 py-0.5 bg-brand-cyan text-white rounded">
@@ -179,7 +179,7 @@ export default function MaestroPage() {
                   setActivoSeleccionado(activoEncontradoExacto);
                   setModalAbierto(true);
                 }}
-                className="w-full flex items-center justify-center gap-2 py-3 bg-brand-cyan hover:bg-brand-cyanHover text-white rounded-xl text-sm font-bold shadow-md transition active:scale-98"
+                className="w-full sm:w-auto shrink-0 flex items-center justify-center gap-2 px-5 py-3 bg-brand-cyan hover:bg-brand-cyanHover text-white rounded-xl text-sm font-bold shadow-md transition active:scale-98"
               >
                 <Wrench className="w-4 h-4" />
                 Registrar Mantención Realizada
@@ -231,7 +231,7 @@ export default function MaestroPage() {
               <select
                 value={edificioFiltro}
                 onChange={(e) => setEdificioFiltro(e.target.value)}
-                className="w-full sm:w-auto px-2.5 py-1.5 text-xs bg-white dark:bg-brand-cardDark border border-slate-200/80 dark:border-slate-700/80 rounded-xl text-brand-dark dark:text-slate-100 focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition"
+                className="w-full sm:w-auto px-3 py-1.5 text-xs bg-white dark:bg-brand-cardDark border border-slate-200/80 dark:border-slate-700/80 rounded-xl text-brand-dark dark:text-slate-100 focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition"
               >
                 <option value="TODOS">Todos los edificios</option>
                 {edificios.map((ed) => (
@@ -252,7 +252,7 @@ export default function MaestroPage() {
                 No hay equipos pendientes con los filtros seleccionados.
               </div>
             ) : (
-              <div className="divide-y divide-slate-100 dark:divide-slate-800">
+              <div className="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:gap-px bg-slate-100 dark:bg-slate-800">
                 {tareasPaginadas.map((a, idx) => {
                   const estadoEstilo =
                     ESTILOS_ESTADO[a.estado_mantencion] ||
@@ -261,7 +261,7 @@ export default function MaestroPage() {
                   return (
                     <article
                       key={a.id || `tar-${idx}`}
-                      className="p-3.5 sm:p-4 hover:bg-slate-50/70 dark:hover:bg-brand-dark/40 transition flex items-center justify-between gap-3"
+                      className="p-3.5 sm:p-4 bg-white dark:bg-brand-cardDark hover:bg-slate-50/80 dark:hover:bg-brand-dark/40 transition flex items-center justify-between gap-3"
                     >
                       <div className="space-y-1 min-w-0 flex-1">
                         <div className="flex items-center gap-2">
