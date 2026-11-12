@@ -3,13 +3,24 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { ServicioRecurrenteCompleto, CategoriaServicio } from '@/types';
-import { X, Calendar, Building2, ShieldCheck, FileText, CheckCircle2 } from 'lucide-react';
+import { X, ShieldCheck } from 'lucide-react';
 
 interface ServicioModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
   servicioEditar?: ServicioRecurrenteCompleto | null;
+}
+
+function sumarDiasFecha(fechaStr: string, dias: number): string {
+  if (!fechaStr || isNaN(dias) || dias <= 0) return fechaStr;
+  const [year, month, day] = fechaStr.split('-').map(Number);
+  const fecha = new Date(year, month - 1, day);
+  fecha.setDate(fecha.getDate() + dias);
+  const yyyy = fecha.getFullYear();
+  const mm = String(fecha.getMonth() + 1).padStart(2, '0');
+  const dd = String(fecha.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
 }
 
 export function ServicioModal({ isOpen, onClose, onSuccess, servicioEditar }: ServicioModalProps) {
@@ -57,12 +68,8 @@ export function ServicioModal({ isOpen, onClose, onSuccess, servicioEditar }: Se
     e.preventDefault();
     setLoading(true);
 
-    // Calcular fecha del próximo vencimiento
-    const fechaBase = new Date(fechaUltima);
-    fechaBase.setDate(fechaBase.getDate() + Number(periodicidadDias));
-    const fechaProximoVencimiento = fechaBase.toISOString().split('T')[0];
+    const fechaProximoVencimiento = sumarDiasFecha(fechaUltima, Number(periodicidadDias));
 
-    // Obtener colegio por defecto
     const { data: colegio } = await supabase.from('colegios').select('id').limit(1).single();
 
     const payload = {
@@ -99,19 +106,20 @@ export function ServicioModal({ isOpen, onClose, onSuccess, servicioEditar }: Se
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-xs">
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-lg shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-brand-dark/70 backdrop-blur-xs">
+      <div className="bg-white dark:bg-brand-cardDark border border-slate-200/80 dark:border-slate-700/80 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 transition-colors">
         
+        {/* Cabecera */}
         <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800">
-          <div className="flex items-center gap-2">
-            <div className="p-2 bg-blue-50 dark:bg-blue-950/70 text-blue-600 dark:text-blue-400 rounded-xl">
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 bg-brand-cyan/15 text-brand-cyan rounded-xl">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="font-bold text-slate-900 dark:text-white text-base">
+              <h2 className="font-extrabold text-brand-dark dark:text-white text-base">
                 {servicioEditar ? 'Actualizar Servicio Normativo' : 'Nuevo Servicio Recurrente'}
               </h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-brand-metallic dark:text-slate-400">
                 Control de resoluciones sanitarias y certificaciones legales
               </p>
             </div>
@@ -119,15 +127,16 @@ export function ServicioModal({ isOpen, onClose, onSuccess, servicioEditar }: Se
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg transition"
+            className="p-1.5 text-brand-metallic hover:text-brand-dark dark:hover:text-white rounded-lg transition"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
+        {/* Formulario */}
         <form onSubmit={handleSubmit} className="p-4 space-y-4 max-h-[80vh] overflow-y-auto">
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
+            <label className="block text-xs font-bold uppercase tracking-wider text-brand-metallic dark:text-slate-300 mb-1">
               Nombre del Servicio *
             </label>
             <input
@@ -136,19 +145,19 @@ export function ServicioModal({ isOpen, onClose, onSuccess, servicioEditar }: Se
               placeholder="Ej. Fumigación y Desratización Trimestral"
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
-              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-xl text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-brand-dark/60 rounded-xl text-sm text-brand-dark dark:text-white focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-all"
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-brand-metallic dark:text-slate-300 mb-1">
                 Categoría
               </label>
               <select
                 value={categoria}
                 onChange={(e) => setCategoria(e.target.value as CategoriaServicio)}
-                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-xl text-sm text-slate-900 dark:text-white"
+                className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-brand-dark/60 rounded-xl text-sm text-brand-dark dark:text-white focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-all"
               >
                 <option value="SANITARIO">Sanitario (Plagas, Agua)</option>
                 <option value="TRANSPORTE_VERTICAL">Transporte Vertical (Ascensores)</option>
@@ -159,7 +168,7 @@ export function ServicioModal({ isOpen, onClose, onSuccess, servicioEditar }: Se
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-brand-metallic dark:text-slate-300 mb-1">
                 Organismo Regulador
               </label>
               <input
@@ -167,15 +176,27 @@ export function ServicioModal({ isOpen, onClose, onSuccess, servicioEditar }: Se
                 placeholder="Ej. Seremi de Salud / SEC / MINVU"
                 value={organismoRegulador}
                 onChange={(e) => setOrganismoRegulador(e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-xl text-sm text-slate-900 dark:text-white"
-              >
-              </input>
+                className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-brand-dark/60 rounded-xl text-sm text-brand-dark dark:text-white focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-all"
+              />
             </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-wider text-brand-metallic dark:text-slate-300 mb-1">
+              Normativa / Decreto de Referencia
+            </label>
+            <input
+              type="text"
+              placeholder="Ej. D.S. 594 / Ley 20.296 / D.S. 289"
+              value={normativaReferencia}
+              onChange={(e) => setNormativaReferencia(e.target.value)}
+              className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-brand-dark/60 rounded-xl text-sm text-brand-dark dark:text-white focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-all"
+            />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-brand-metallic dark:text-slate-300 mb-1">
                 Periodicidad (Días) *
               </label>
               <input
@@ -184,13 +205,15 @@ export function ServicioModal({ isOpen, onClose, onSuccess, servicioEditar }: Se
                 required
                 value={periodicidadDias}
                 onChange={(e) => setPeriodicidadDias(Number(e.target.value))}
-                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-xl text-sm text-slate-900 dark:text-white font-mono"
+                className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-brand-dark/60 rounded-xl text-sm text-brand-dark dark:text-white font-mono focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-all"
               />
-              <span className="text-[10px] text-slate-400">30 = Mensual | 90 = Trimestral | 365 = Anual</span>
+              <span className="text-[10px] text-brand-metallic mt-0.5 block">
+                30 = Mensual | 90 = Trimestral | 365 = Anual
+              </span>
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-brand-metallic dark:text-slate-300 mb-1">
                 Fecha Última Ejecución *
               </label>
               <input
@@ -198,14 +221,14 @@ export function ServicioModal({ isOpen, onClose, onSuccess, servicioEditar }: Se
                 required
                 value={fechaUltima}
                 onChange={(e) => setFechaUltima(e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-xl text-sm text-slate-900 dark:text-white font-mono"
+                className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-brand-dark/60 rounded-xl text-sm text-brand-dark dark:text-white font-mono focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-all"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-brand-metallic dark:text-slate-300 mb-1">
                 Empresa Proveedora
               </label>
               <input
@@ -213,12 +236,12 @@ export function ServicioModal({ isOpen, onClose, onSuccess, servicioEditar }: Se
                 placeholder="Ej. Schindler / PlagStop"
                 value={proveedorEmpresa}
                 onChange={(e) => setProveedorEmpresa(e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-xl text-sm text-slate-900 dark:text-white"
+                className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-brand-dark/60 rounded-xl text-sm text-brand-dark dark:text-white focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-brand-metallic dark:text-slate-300 mb-1">
                 N° Certificado / Resolución
               </label>
               <input
@@ -226,13 +249,13 @@ export function ServicioModal({ isOpen, onClose, onSuccess, servicioEditar }: Se
                 placeholder="Ej. RES-SAN-884"
                 value={numeroCertificado}
                 onChange={(e) => setNumeroCertificado(e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-xl text-sm text-slate-900 dark:text-white font-mono"
+                className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-brand-dark/60 rounded-xl text-sm text-brand-dark dark:text-white font-mono focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-all"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
+            <label className="block text-xs font-bold uppercase tracking-wider text-brand-metallic dark:text-slate-300 mb-1">
               Observaciones
             </label>
             <textarea
@@ -240,22 +263,22 @@ export function ServicioModal({ isOpen, onClose, onSuccess, servicioEditar }: Se
               placeholder="Detalles sobre muestras, alcances o exigencias..."
               value={observaciones}
               onChange={(e) => setObservaciones(e.target.value)}
-              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-xl text-sm text-slate-900 dark:text-white"
+              className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-brand-dark/60 rounded-xl text-sm text-brand-dark dark:text-white focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-all"
             />
           </div>
 
-          <div className="pt-2 flex items-center justify-end gap-2 border-t border-slate-200 dark:border-slate-800">
+          <div className="pt-3 flex items-center justify-end gap-2.5 border-t border-slate-200 dark:border-slate-800">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition"
+              className="px-4 py-2 text-xs font-semibold text-brand-metallic dark:text-slate-300 hover:text-brand-dark dark:hover:text-white hover:bg-slate-100 dark:hover:bg-brand-dark rounded-xl border border-slate-200 dark:border-slate-700 transition"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition shadow-xs disabled:opacity-50"
+              className="px-4 py-2 bg-brand-cyan hover:bg-brand-cyanHover text-white text-xs font-bold rounded-xl transition shadow-xs active:scale-95 disabled:opacity-50"
             >
               {loading ? 'Guardando...' : servicioEditar ? 'Guardar Cambios' : 'Registrar Servicio'}
             </button>

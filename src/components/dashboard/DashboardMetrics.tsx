@@ -33,15 +33,15 @@ export function DashboardMetrics({
       {/* Total Activos */}
       <button
         onClick={() => onFiltroRapidoChange('TODOS')}
-        className={`p-3.5 sm:p-4 rounded-xl border text-left transition-all shadow-xs ${
+        className={`p-3.5 sm:p-4 rounded-2xl border text-left transition-all shadow-xs ${
           filtroRapido === 'TODOS'
-            ? 'bg-blue-600 text-white border-blue-600 ring-2 ring-blue-500/40 shadow-md'
-            : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-slate-700'
+            ? 'bg-brand-cyan text-white border-brand-cyan ring-2 ring-brand-cyan/30 shadow-md'
+            : 'bg-white dark:bg-brand-cardDark border-slate-200/80 dark:border-slate-700/80 hover:border-brand-cyan/50 dark:hover:border-brand-cyan/50'
         }`}
       >
         <div
           className={`flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider ${
-            filtroRapido === 'TODOS' ? 'text-blue-100' : 'text-slate-500 dark:text-slate-400'
+            filtroRapido === 'TODOS' ? 'text-white/90' : 'text-brand-metallic dark:text-slate-400'
           }`}
         >
           <Building2 className="w-3.5 h-3.5" />
@@ -49,7 +49,7 @@ export function DashboardMetrics({
         </div>
         <div
           className={`text-xl sm:text-2xl font-bold mt-1.5 ${
-            filtroRapido === 'TODOS' ? 'text-white' : 'text-slate-900 dark:text-white'
+            filtroRapido === 'TODOS' ? 'text-white' : 'text-brand-dark dark:text-white'
           }`}
         >
           {totalActivos}
@@ -59,10 +59,10 @@ export function DashboardMetrics({
       {/* Vencidos */}
       <button
         onClick={() => onFiltroRapidoChange('VENCIDO')}
-        className={`p-3.5 sm:p-4 rounded-xl border text-left transition-all shadow-xs ${
+        className={`p-3.5 sm:p-4 rounded-2xl border text-left transition-all shadow-xs ${
           filtroRapido === 'VENCIDO'
             ? 'bg-rose-50 dark:bg-rose-950/60 border-rose-500 ring-2 ring-rose-500/30'
-            : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-rose-300'
+            : 'bg-white dark:bg-brand-cardDark border-slate-200/80 dark:border-slate-700/80 hover:border-rose-300 dark:hover:border-rose-800'
         }`}
       >
         <div className="flex items-center gap-1.5 text-[11px] font-semibold text-rose-600 dark:text-rose-400 uppercase tracking-wider">
@@ -77,10 +77,10 @@ export function DashboardMetrics({
       {/* Por Vencer */}
       <button
         onClick={() => onFiltroRapidoChange('POR VENCER')}
-        className={`p-3.5 sm:p-4 rounded-xl border text-left transition-all shadow-xs ${
+        className={`p-3.5 sm:p-4 rounded-2xl border text-left transition-all shadow-xs ${
           filtroRapido === 'POR VENCER'
             ? 'bg-amber-50 dark:bg-amber-950/60 border-amber-500 ring-2 ring-amber-500/30'
-            : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-amber-300'
+            : 'bg-white dark:bg-brand-cardDark border-slate-200/80 dark:border-slate-700/80 hover:border-amber-300 dark:hover:border-amber-800'
         }`}
       >
         <div className="flex items-center gap-1.5 text-[11px] font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider">
@@ -95,10 +95,10 @@ export function DashboardMetrics({
       {/* Al Día */}
       <button
         onClick={() => onFiltroRapidoChange('AL DÍA')}
-        className={`p-3.5 sm:p-4 rounded-xl border text-left transition-all shadow-xs ${
+        className={`p-3.5 sm:p-4 rounded-2xl border text-left transition-all shadow-xs ${
           filtroRapido === 'AL DÍA'
             ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-500 ring-2 ring-emerald-500/30'
-            : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-emerald-300'
+            : 'bg-white dark:bg-brand-cardDark border-slate-200/80 dark:border-slate-700/80 hover:border-emerald-300 dark:hover:border-emerald-800'
         }`}
       >
         <div className="flex items-center gap-1.5 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
@@ -113,10 +113,10 @@ export function DashboardMetrics({
       {/* Alerta CAPEX */}
       <button
         onClick={() => onFiltroRapidoChange('CAPEX')}
-        className={`col-span-2 sm:col-span-1 p-3.5 sm:p-4 rounded-xl border text-left transition-all shadow-xs ${
+        className={`col-span-2 sm:col-span-1 p-3.5 sm:p-4 rounded-2xl border text-left transition-all shadow-xs ${
           filtroRapido === 'CAPEX'
             ? 'bg-purple-50 dark:bg-purple-950/60 border-purple-500 ring-2 ring-purple-500/30'
-            : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-purple-300'
+            : 'bg-white dark:bg-brand-cardDark border-slate-200/80 dark:border-slate-700/80 hover:border-purple-300 dark:hover:border-purple-800'
         }`}
       >
         <div className="flex items-center gap-1.5 text-[11px] font-semibold text-purple-600 dark:text-purple-400 uppercase tracking-wider">

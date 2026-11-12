@@ -30,26 +30,26 @@ export function ActivosFilters({
   onNuevoActivo,
 }: ActivosFiltersProps) {
   return (
-    <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col lg:flex-row gap-4 items-center justify-between transition-colors">
+    <div className="bg-white dark:bg-brand-cardDark p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 shadow-xs flex flex-col lg:flex-row gap-3 items-stretch lg:items-center justify-between transition-colors">
       <div className="relative w-full lg:w-80">
-        <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
+        <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-brand-metallic" />
         <input
           type="text"
-          placeholder="Buscar por equipo, sala o técnico..."
+          placeholder="Buscar por equipo, código, sala o técnico..."
           value={busqueda}
           onChange={(e) => onBusquedaChange(e.target.value)}
-          className="w-full pl-9 pr-4 py-2 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full pl-10 pr-3.5 py-2 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-brand-dark/60 text-brand-dark dark:text-white rounded-xl text-xs sm:text-sm focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-all"
         />
       </div>
 
-      <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+      <div className="flex flex-wrap items-center gap-2.5 w-full lg:w-auto">
         <select
           value={sedeSeleccionada}
           onChange={(e) => {
             onSedeChange(e.target.value);
             onEdificioChange('TODOS');
           }}
-          className="px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 sm:flex-none px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm bg-white dark:bg-brand-dark/80 text-brand-dark dark:text-white focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition"
         >
           <option value="TODAS">Todas las Sedes</option>
           {sedes.map((s) => (
@@ -60,7 +60,7 @@ export function ActivosFilters({
         <select
           value={edificioSeleccionado}
           onChange={(e) => onEdificioChange(e.target.value)}
-          className="px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 sm:flex-none px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm bg-white dark:bg-brand-dark/80 text-brand-dark dark:text-white focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition"
         >
           <option value="TODOS">Todos los Edificios</option>
           {edificios.map((ed) => (
@@ -71,7 +71,7 @@ export function ActivosFilters({
         <select
           value={clasificacionSeleccionada}
           onChange={(e) => onClasificacionChange(e.target.value)}
-          className="px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 sm:flex-none px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm bg-white dark:bg-brand-dark/80 text-brand-dark dark:text-white focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition"
         >
           <option value="TODAS">Todas las Clasificaciones</option>
           <option value="SEGURIDAD">SEGURIDAD</option>
@@ -82,7 +82,7 @@ export function ActivosFilters({
 
         <button
           onClick={onNuevoActivo}
-          className="ml-auto lg:ml-2 flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-semibold shadow-sm transition"
+          className="w-full sm:w-auto ml-auto lg:ml-1 flex items-center justify-center gap-2 px-4 py-2 bg-brand-cyan hover:bg-brand-cyanHover text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs transition active:scale-95"
         >
           <Plus className="w-4 h-4" />
           Nuevo Activo

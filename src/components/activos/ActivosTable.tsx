@@ -28,7 +28,7 @@ export function ActivosTable({
 }: ActivosTableProps) {
   if (loading) {
     return (
-      <div className="p-12 text-center text-xs sm:text-sm text-slate-400">
+      <div className="p-12 text-center text-xs sm:text-sm text-brand-metallic">
         Cargando inventario maestro...
       </div>
     );
@@ -36,7 +36,7 @@ export function ActivosTable({
 
   if (activos.length === 0) {
     return (
-      <div className="p-12 text-center text-xs sm:text-sm text-slate-400">
+      <div className="p-12 text-center text-xs sm:text-sm text-brand-metallic">
         No se encontraron activos con los filtros seleccionados.
       </div>
     );

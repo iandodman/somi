@@ -36,7 +36,6 @@ export default function ActivosPage() {
     cargarActivos();
   }, []);
 
-  // Al cambiar cualquier filtro, regresamos a la página 1
   useEffect(() => {
     setPaginaActual(1);
   }, [busqueda, sedeSeleccionada, edificioSeleccionado, clasificacionSeleccionada]);
@@ -84,7 +83,6 @@ export default function ActivosPage() {
     );
   }, [activos, sedeSeleccionada]);
 
-  // Filtrado reactivo en memoria
   const activosFiltrados = useMemo(() => {
     return activos.filter((a) => {
       const term = busqueda.toLowerCase().trim();
@@ -104,7 +102,6 @@ export default function ActivosPage() {
     });
   }, [activos, busqueda, sedeSeleccionada, edificioSeleccionado, clasificacionSeleccionada]);
 
-  // Cálculo de paginación
   const totalPaginas = Math.ceil(activosFiltrados.length / ITEMS_POR_PAGINA) || 1;
   
   const activosPaginados = useMemo(() => {
@@ -114,17 +111,21 @@ export default function ActivosPage() {
 
   return (
     <AuthGuard>
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
-      <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+      <div className="max-w-7xl mx-auto space-y-6 transition-colors">
         
-        {/* Cabecera Responsiva */}
+        {/* Cabecera Ejecutiva */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-4">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
-              Maestro de Activos
-            </h1>
-            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
-              Administra el inventario técnico, ciclos preventivos y recambio CAPEX ({activosFiltrados.length} equipos).
+            <div className="flex items-center gap-2.5">
+              <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-brand-dark dark:text-white">
+                Maestro de Activos
+              </h1>
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-brand-cyan/15 text-brand-cyan border border-brand-cyan/30">
+                {activosFiltrados.length} equipos
+              </span>
+            </div>
+            <p className="text-xs sm:text-sm text-brand-metallic dark:text-slate-400 mt-0.5">
+              Inventario técnico unificado, programación preventiva y control de recambio CAPEX
             </p>
           </div>
         </div>
@@ -147,10 +148,8 @@ export default function ActivosPage() {
           }}
         />
 
-        {/* Tabla envuelta con soporte táctil horizontal */}
-        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden">
-          {/* Contenedor Principal de Activos */}
-        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden">
+        {/* Contenedor Principal de Activos */}
+        <div className="bg-white dark:bg-brand-cardDark rounded-2xl border border-slate-200/80 dark:border-slate-700/80 shadow-xs overflow-hidden">
           <ActivosTable
             activos={activosPaginados}
             loading={loading}
@@ -167,7 +166,6 @@ export default function ActivosPage() {
               setDeleteDialogOpen(true);
             }}
           />
-        </div>
         </div>
 
         {/* Modal Editar / Nuevo */}
@@ -190,7 +188,6 @@ export default function ActivosPage() {
           isDeleting={isDeleting}
         />
       </div>
-    </div>
     </AuthGuard>
   );
 }

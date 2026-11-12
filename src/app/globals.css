@@ -2,14 +2,23 @@
 
 @variant dark (&:where(.dark, .dark *));
 
+@theme {
+  --color-brand-dark: #0B192C;
+  --color-brand-cardDark: #1E293B;
+  --color-brand-cyan: #00B493;
+  --color-brand-cyanHover: #00967A;
+  --color-brand-metallic: #64748B;
+  --color-brand-lightBg: #F8FAFC;
+}
+
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
+  --background: #F8FAFC;
+  --foreground: #0B192C;
 }
 
 .dark {
-  --background: #020617;
-  --foreground: #f8fafc;
+  --background: #0B192C;
+  --foreground: #F8FAFC;
 }
 
 body {
